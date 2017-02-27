@@ -1,0 +1,22 @@
+.homeSection {
+  height: 100vh;
+}
+
+.homeSection header {
+  overflow: hidden;
+}
+
+.homeSection{
+  background-image: url(https://images3.alphacoders.com/794/794939.jpg);
+  background-position: center;
+  background-size: cover;
+}
+
+.homeSection .welcomeText{
+  padding-top: 8rem;
+  text-align: center;
+}
+
+.randomSection {
+  color: white;
+}

@@ -1,0 +1,89 @@
+.newWallSection .container {
+	margin-top: 4rem;
+}
+
+.newWallSection .droparea {
+	height: 60vh;
+	text-align: center;
+	transition: all 1.5s ease-in-out;
+	background-size: cover;
+	background-position: top;
+	background-repeat: no-repeat;
+	overflow: hidden;
+}
+
+.newWallSection .droparea:hover {
+	background-position: bottom;
+}
+
+/*.newWallSection .droparea:after {
+	content: "Nombre: "attr(data-name) "\A"
+			 "Dimensiones: "attr(data-width) "x"attr(data-height) "\A"
+			 "Tipo: "attr(data-type) "\A"
+		 	 "Peso: " attr(data-size) "MB"
+			 ;
+	height: 8rem;
+	display: block;
+	white-space: pre;
+	text-align: left;
+	text-shadow: 0px 0px 2px rgba(0,0,0,1), 0 0 3px rgba(0,0,0,1);
+	font-size: 1rem;
+	position: absolute;
+	top: 0;
+}*/
+
+.newWallSection .droparea i {
+	font-size: 3rem;
+	margin-top: calc(40vh / 2 - 1.5rem);
+	text-shadow: 0 0 5px rgba(255,255,255,.7);
+	color: black;
+}
+
+.newWallSection .droparea h1 {
+	font-size: 1rem;
+	margin-top: calc(40vh / 2 - 1rem) 
+}
+
+/* Clases de Droparea */
+
+.overCSS {
+	opacity: .5;
+}
+
+.leaveCSS {
+	background: rgba(0,0,0,.2);
+} 
+
+.dropCSS {
+
+}
+
+/* Clases de la paleta */
+
+#pallete {
+	height: .5rem;
+	transition: all .3s ease;
+	background: rgba(0,0,0,.2);
+}
+
+#pallete:hover {
+	height: 2rem;
+}
+
+#pallete:after {
+	content: 'Colores';
+	text-align: center;
+	color: transparent;
+	width: 100%;
+	transition: all .2s ease;
+}
+
+#pallete:hover:after {
+	color: white;
+
+}
+
+.file-input-wrapper:hover span {
+	color: white !important;
+}
+
