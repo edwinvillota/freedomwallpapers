@@ -193,7 +193,6 @@
 			{
 				if($stmt->execute()){
 					$this->setUrl();
-					$this->createThumbs();
 					return true;
 				} else {
 					return false;
@@ -212,98 +211,82 @@
 			return $categoryName;
 		}
 
-		public function createThumbs () {
-			// Funcion para crear miniaturas
-			if ($this->url != null){
-				$file = $this->url;
-				$ratio = $this->width / $this->height;
+		public function createThumbs ($small = 576, $medium = 992, $large = 1200) {
+			if(is_null($this->url)){
+				return false;
+			}
+			// Definir la ruta del archivo
+			$file = $this->url;
+			// Definir el ratio de la imagen
+			$ratio = $this->width / $this->height;
 
-				// Tamaños
-				$small = 576;
-				$medium = 992;
-				$large = 1200;
+			// Definir la altura proporcional de las miniaturas
+			$hsmall = round($small / $ratio);
+			$hmedium = round($medium / $ratio);
+			$hlarge = round($large / $ratio);
 
-				// Definir altura de la imagen segun su anchura
+			// Obtener la extension del archivo
+			$ext = explode(".",$file);
+			$ext = strtolower($ext[count($ext) - 1]);
+			if ($ext == "jpeg") $ext = "jpg";
 
-				$hsmall = round($small / $ratio);
-				$hmedium = round($medium / $ratio);
-				$hlarge = round($large / $ratio);
+			// Validar si existe el archivo
+			if (!file_exists($file)){
+				return false;
+			}
 
+			// Crear las imagenes
+			switch ($ext) {
+				case 'jpg':
+					$img = imagecreatefromjpeg($file);
+					break;
 
-				// Obtener la extension
-			    $ext = explode(".",$file);
-          		$ext = strtolower($ext[count($ext) - 1]);
-          		if ($ext == "jpeg") $ext = "jpg";
+				case 'png':
+					$img = imagecreatefrompng($file);
+					break;
 
+				case 'gif':
+						$img = imagecreatefromgif($file);
+						break;
+			}
 
-          		// Crear la imagen
-          		switch ($ext) {
-              		case "jpg":
-                		$img = @imagecreatefromjpeg($file);
-                		if(!$img){
-        				$img  = imagecreatetruecolor(150, 30);
-       					$bgc = imagecolorallocate($img, 255, 255, 255);
-       					$tc  = imagecolorallocate($img, 0, 0, 0);
+			// Crear los identificadores de recurso
+			$thumb_small = imagecreatetruecolor($small,$hsmall);
+			$thumb_medium = imagecreatetruecolor($medium,$hmedium);
+			$thumb_large = imagecreatetruecolor($large,$hlarge);
 
-        				imagefilledrectangle($img, 0, 0, 150, 30, $bgc);
+			// Redimensionar las miniaturas
+			imagecopyresampled($thumb_small, $img, 0, 0, 0, 0, $small, $hsmall, $this->width, $this->height);
+   		imagecopyresampled($thumb_medium, $img, 0, 0, 0, 0, $medium, $hmedium, $this->width, $this->height);
+   		imagecopyresampled($thumb_large, $img, 0, 0, 0, 0, $large, $hlarge, $this->width, $this->height);
 
-        				/* Output an error message */
-        				imagestring($img, 1, 5, 5, 'Error loading ' . $file, $tc);
-                		}
-              		break;
-              		case "png":
-                		$img = imagecreatefrompng(utf8_decode($file));
-              		break;
-              		case "gif":
-                		$img = imagecreatefromgif(utf8_decode($file));
-              		break;
-          		}
+			// Crear la carpeta de miniaturas y definir la ruta
+   		$thumbsFolder = 'wallpapers/' . $this->getCategoryName() . '/thumbs';
+ 			if (!file_exists($thumbsFolder)){
+				mkdir($thumbsFolder);
+			}
 
-/*
-          		// Crear los identificadores de recuro de imagen
-          		$thumb_small = imagecreatetruecolor($small,$hsmall);
-          		$thumb_medium = imagecreatetruecolor($medium,$hmedium);
-          		$thumb_large = imagecreatetruecolor($large,$hlarge);
+			// Guardar las miniaturas
+			$smallPath = $thumbsFolder . '/' . $this->id . '-small.jpg';
+   		imagejpeg($thumb_small,$smallPath);
+   		$mediumPath = $thumbsFolder . '/' . $this->id . '-medium.jpg';
+  		imagejpeg($thumb_medium,$mediumPath);
+  		$largePath = $thumbsFolder . '/' . $this->id . '-large.jpg';
+   		imagejpeg($thumb_large,$largePath);
 
-          		// Redimensionar las miniaturas
-          		imagecopyresampled($thumb_small, $img, 0, 0, 0, 0, $small, $hsmall, $this->width, $this->height);
-          		imagecopyresampled($thumb_medium, $img, 0, 0, 0, 0, $medium, $hmedium, $this->width, $this->height);
-          		imagecopyresampled($thumb_large, $img, 0, 0, 0, 0, $large, $hlarge, $this->width, $this->height);
-
-          		// Crear la carpeta de miniaturas y definir la ruta
-          		$thumbsFolder = 'wallpapers/' . utf8_decode($this->getCategoryName()) . '/thumbs';
-          		if (!file_exists($thumbsFolder)){
-          			mkdir($thumbsFolder);
-          		}
-
-          		// Guardar las imagenes
-          		$smallPath = $thumbsFolder . '/' . $this->id . '-small.jpg';
-          		imagejpeg($thumb_small,$smallPath);
-          		$mediumPath = $thumbsFolder . '/' . $this->id . '-medium.jpg';
-          		imagejpeg($thumb_medium,$mediumPath);
-          		$largePath = $thumbsFolder . '/' . $this->id . '-large.jpg';
-          		imagejpeg($thumb_large,$largePath);
-
-          		// Codificar en utf8 los paths
-          		$smallPath = utf8_decode($smallPath);
-          		$mediumPath = utf8_decode($mediumPath);
-          		$largePath = utf8_decode($largePath);
-
-          		// Registrar thumbs en las base de datos
-
-          		$db = new ConnectionDB();
-          		$stmt = $db->prepare("UPDATE wallpapers SET thumb_small = ?, thumb_medium = ?, thumb_large = ? WHERE id = ?");
-          		$stmt->bind_param('sssi',
-          			$smallPath,
-          			$mediumPath,
-          			$largePath,
-          			$this->id
-          			);
-          		if($stmt->execute()){
-          			return true;
-          		} else {
-          			return $stmt->error;
-          		}*/
+			// Registrar thumbs en la base de datos
+			$db = new ConnectionDB();
+			$stmt = $db->prepare("UPDATE wallpapers SET thumb_small = ?, thumb_medium = ?, thumb_large = ? WHERE id = ?");
+			$stmt->bind_param('sssi',
+					$smallPath,
+					$mediumPath,
+					$largePath,
+					$this->id
+			);
+			if($stmt->execute()){
+				return true;
+			} else {
+				return false;
 			}
 		}
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 sec_session_start();
 	if(isset($_POST['wall']) && isset($_SESSION['user'])){
 		// Obtener el usuario que inicio sesion
@@ -15,7 +15,7 @@ sec_session_start();
 		// Obtener la fecha de hoy
 		$date = date('y\-m\-d G:i');
 		// Obtener los tags
-		$tags = '#all,#example'; 
+		$tags = '#all,#example';
 
 
 		// Adecuar la url base 64
@@ -26,22 +26,18 @@ sec_session_start();
 
 		// Si el wallpaper se agrego
 		if($newWall->add()){
-			$folder = 'wallpapers/' . utf8_decode($newWall->getCategoryName());
+			$folder = 'wallpapers/' . $newWall->getCategoryName();
 			if(!file_exists($folder)){
-				mkdir($folder);
-			}
-
-			file_put_contents(utf8_decode($newWall->getUrl()),$data);
-			//echo json_encode(true);
+			 	mkdir($folder);
+			 }
+			 file_put_contents($newWall->getUrl(),$data);
+			 echo 'Se crearon las miniaturas: ' . $newWall->createThumbs();
+			 echo json_encode(true);
 		} else {
-			//echo json_encode(false);
+			echo json_encode(false);
 		}
-		
-		echo json_encode($newWall->createThumbs());
 
 	} else {
 		echo json_encode(false);
 	}
-
-
  ?>
