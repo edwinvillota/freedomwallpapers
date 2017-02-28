@@ -17,6 +17,11 @@
   text-align: center;
 }
 
-.randomSection {
-  color: white;
+.recentSection {
+  padding-top: 3rem;
+}
+
+.card:hover {
+  border: 1px solid white;
+  cursor: pointer;
 }

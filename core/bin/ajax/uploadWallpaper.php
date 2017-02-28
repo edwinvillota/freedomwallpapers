@@ -30,9 +30,13 @@ sec_session_start();
 			if(!file_exists($folder)){
 			 	mkdir($folder);
 			 }
-			 file_put_contents($newWall->getUrl(),$data);
-			 echo 'Se crearon las miniaturas: ' . $newWall->createThumbs();
-			 echo json_encode(true);
+			 if(file_put_contents($newWall->getUrl(),$data)){
+				 $newWall->createThumbs();
+				 echo json_encode(true);
+			 } else {
+				 echo json_encode(false);
+			 }
+
 		} else {
 			echo json_encode(false);
 		}

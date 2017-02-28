@@ -11,13 +11,7 @@
 				// Metodo para obtener el identificador
 				// Consultar el id que fue asignado
 				$db = new ConnectionDB();
-				$dbId = $db->prepare("SELECT id FROM wallpapers WHERE user_id = ? AND category_id = ? AND name = ? AND color_vibrant = ?");
-				$dbId->bind_param('iiss',
-						 $this->user_id,
-						 $this->category_id,
-						 $this->name,
-						 $this->pallete->Vibrant
-						 );
+				$dbId = $db->prepare("SELECT MAX(id) AS id FROM wallpapers");
 				$dbId->execute();
 				$dbId->bind_result($id);
 				while($dbId->fetch()){
@@ -210,7 +204,7 @@
 			$categoryName = $category[0]['name'];
 			return $categoryName;
 		}
-
+		// Metodo para crear las miniaturas
 		public function createThumbs ($small = 576, $medium = 992, $large = 1200) {
 			if(is_null($this->url)){
 				return false;
@@ -289,8 +283,29 @@
 				return false;
 			}
 		}
+		// Metodo para obtener el nombre del Usuario
+		public function getUploader(){
+			$username;
+			$db = new ConnectionDB();
+			$stmt = $db->prepare("SELECT username FROM members WHERE id = ?");
+			$stmt->bind_param('i',$this->user_id);
+			if($stmt->execute()){
+				$stmt->bind_result($name);
+				while($stmt->fetch()){
+					$username = $name;
+				}
+				$stmt->close();
+				$db->close();
+				return $username;
+			} else {
+				$stmt->close();
+				$db->close();
+				return $stmt->error;
+			}
+		}
 
 
+		// Metodos Estaticos
 		public static function getWallpaper($idWall){
 			// acceder a la base de datos
 			$db = new ConnectionDB();
