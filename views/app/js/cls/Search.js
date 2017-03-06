@@ -1,0 +1,20 @@
+class Search {
+  constructor(keyword,category,byColor,color,sort) {
+    this.params = {
+      'keyword' : keyword.trim() || false,
+      'category' : (category != 0) ? category : false,
+      'color' : (byColor) ? color : false,
+      'sort' : (sort != 0) ? sort : false
+    }
+  }
+
+  execute(){
+    let getParams = '';
+    for (let p in this.params){
+      if(this.params[p]){
+          getParams += `&${p}=${this.params[p]}`;
+      }
+    }
+    window.location.assign(`?view=search${getParams}`);
+  }
+}

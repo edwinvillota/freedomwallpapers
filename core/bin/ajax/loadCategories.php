@@ -1,6 +1,7 @@
 <?php
-	$db = new ConnectionDB();
-	$result = $db->getArray('SELECT * FROM categories ORDER BY name');
+	$c = new Collection();
+
+	$result = $c->getCategories();
 	echo json_encode($result);
 
 ?>

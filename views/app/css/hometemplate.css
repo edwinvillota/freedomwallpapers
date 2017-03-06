@@ -25,3 +25,7 @@
   border: 1px solid white;
   cursor: pointer;
 }
+
+.card {
+  background-color: #333;
+}

@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Cargar Head y Navbar solo cuando se haya iniciado sesion
 
 if(!isset($_SESSION['user'])){
@@ -6,7 +6,7 @@ if(!isset($_SESSION['user'])){
 	exit();
 } else {
 	include(HTML_DIR . 'overall/head.php');
-	include(HTML_DIR . 'overall/navbar.php');	
+	include(HTML_DIR . 'overall/navbar.php');
 }
 ?>
 
@@ -15,7 +15,7 @@ if(!isset($_SESSION['user'])){
 		<div class="row">
 			<div class="droparea col-12 leaveCSS">
 				<h1 class="h3">Arrastra aquí el Wallpaper</h1>
-			</div>	
+			</div>
 		</div>
 		<div class="row" id="pallete">
 
@@ -56,7 +56,7 @@ if(!isset($_SESSION['user'])){
      'userClass' => true,
      'alertClass' => true,
      'dropareaClass' => true,
-     'dbQuery' => true,
+     'dbQueryClass' => true,
      'generals' => false,
      'loginScript' => false,
      'registerScript' => false,
@@ -81,4 +81,3 @@ if(!isset($_SESSION['user'])){
 
   include(HTML_DIR . 'overall/footer.php')
 ?>
-

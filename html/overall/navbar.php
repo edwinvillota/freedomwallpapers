@@ -28,13 +28,10 @@
         </div>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Inicio<span class="sr-only"></span></a>
+          <a class="nav-link" href="?view=search">Wallpapers<span class="sr-only"></span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Categorias</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Perfil</a>
+          <a class="nav-link" href="#">Home</a>
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">

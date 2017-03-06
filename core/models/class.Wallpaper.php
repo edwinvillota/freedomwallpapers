@@ -5,7 +5,7 @@
 	class Wallpaper
 	{
 		# Propiedades
-		protected $id;
+		public $id;
 		public function getId(){
 			if ($this->id == NULL){
 				// Metodo para obtener el identificador
@@ -30,16 +30,18 @@
 		}
 
 		// Usuario Uploader
-		protected $user_id;
+		public $user_id;
 		public function getUser_id(){
 			return $this->user_id;
 		}
 		public function setUser_id($user_id){
 			$this->user_id = $user_id;
 		}
+		// Nombre de Uploader
+		public $user_name;
 
 		// Nombre
-		protected $name;
+		public $name;
 		public function getName(){
 			return $this->name;
 		}
@@ -48,7 +50,7 @@
 		}
 
 		// Categoria
-		protected $category_id;
+		public $category_id;
 		public function getCategory_id(){
 			return $this->category_id;
 		}
@@ -56,8 +58,11 @@
 			$this->category_id = $category_id;
 		}
 
+		// Nombre de categoria
+		public $category_name;
+
 		//Tags
-		protected $tags;
+		public $tags;
 		public function getTags(){
 			return $this->tags;
 		}
@@ -66,7 +71,7 @@
 		}
 
 		// Fecha de subida
-		protected $date_of_upload;
+		public $date_of_upload;
 		public function getDate_of_upload(){
 			return $this->date_of_upload;
 		}
@@ -75,7 +80,7 @@
 		}
 
 		// Palleta de colores
-		protected $pallete;
+		public $pallete;
 		public function getPallete(){
 			return $this->pallete;
 		}
@@ -84,7 +89,7 @@
 		}
 
 		// Propiedades de archivo
-		protected $fileInfo;
+		public $fileInfo;
 		public function getFileInfo(){
 			return $this->fileInfo;
 		}
@@ -94,7 +99,7 @@
 
 
 		// Url
-		protected $url;
+		public $url;
 		public function getUrl(){
 			return $this->url;
 		}
@@ -116,6 +121,7 @@
 					return false;
 				}
 			} else {
+				$this->category_name = $this->getCategoryName();
 				$this->url = $rurl;
 			}
 
@@ -123,7 +129,7 @@
 		}
 
 		// Thumbs
-		protected $thumbs;
+		public $thumbs;
 		public function getThumbs(){
 			return $this->thumbs;
 		}
@@ -132,7 +138,7 @@
 		}
 
 		// Alto
-		protected $height;
+		public $height;
 		public function getHeight(){
 			return $this->height;
 		}
@@ -141,7 +147,7 @@
 		}
 
 		// Ancho
-		protected $width;
+		public $width;
 		public function getWidth(){
 			return $this->width;
 		}
@@ -335,7 +341,6 @@
 			$sthumbs->large = $sthumb_large;
 
 			$newWall = new Wallpaper($suser_id, $sname, $scategory_id, $stags, $sdate_of_upload, $spallete, $sfileInfo, $sheight, $swidth);
-
 
 			$newWall->setId($sid);
 			$newWall->setUrl($surl);

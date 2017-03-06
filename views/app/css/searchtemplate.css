@@ -1,0 +1,19 @@
+.searchBarSection {
+  padding-top: 4rem;
+}
+
+.searchBarSection input[type="color"]{
+  height: 2.4rem;
+}
+
+.wallResultSection {
+  padding-top: 2rem;
+}
+
+.card {
+  background: #000;
+}
+
+.card:hover {
+  border: solid 1px white;
+}

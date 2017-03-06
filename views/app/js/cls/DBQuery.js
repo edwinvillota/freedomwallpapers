@@ -14,7 +14,7 @@ class DBQuery {
 	    })
 	      .done(function(response) {
 	        callback(response);
-	        
+
 	    })
 	     .fail(function(jqXHR,message,ehttp) {
 	        var e = new Error(message + ' ' + ehttp);
@@ -26,6 +26,12 @@ class DBQuery {
 
 	getCategories(callback){
 		this.access('loadCategories',response => {
+			callback(response);
+		});
+	}
+
+	getRecent(callback){
+		this.access('getRecent',response => {
 			callback(response);
 		});
 	}

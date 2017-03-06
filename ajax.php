@@ -24,6 +24,10 @@
 				require('core/bin/ajax/uploadWallpaper.php');
 				break;
 
+			case 'getRecent':
+				require('core/bin/ajax/getRecent.php');
+				break;
+
 			default:
 				header('location: index.php');
 				break;
