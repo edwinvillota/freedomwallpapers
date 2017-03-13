@@ -12,7 +12,7 @@
             <span class="input-group-btn">
               <button class="btn btn-primary" type="button" id="searchBtn">Buscar</button>
             </span>
-            <input type="text" class="form-control" placeholder="Buscar" id="keywordInput">
+            <input type="text" class="form-control" placeholder="Buscar" id="keywordInput" value="<?php (isset($_GET['keyword'])) ? print($_GET['keyword']) : '';?>">
           </div>
         </div>
         <div class="form-group mb-1 col-12 col-sm-6 col-lg-3">
@@ -22,24 +22,36 @@
               $c = new Collection();
               $categories = $c->getCategories();
               unset($c);
-              foreach ($categories as $key => $value) {
-                echo '<option value="' . $value['id'] . '">' . $value['name'] . '</option>';
+              if(isset($_GET['category'])){
+                foreach ($categories as $key => $value) {
+                  if($_GET['category'] == $value['id']){
+                    echo '<option selected value="' . $value['id'] . '">' . $value['name'] . '</option>';
+                  } else {
+                    echo '<option value="' . $value['id'] . '">' . $value['name'] . '</option>';
+                  }
+                }
+              } else {
+                foreach ($categories as $key => $value) {
+                  echo '<option value="' . $value['id'] . '">' . $value['name'] . '</option>';
+                }
               }
+
+
              ?>
           </select>
         </div>
         <div class="form-group mb-1 col-12 col-sm-6 col-lg-3">
           <div class="input-group w-100">
             <span class="input-group-addon col-3" id="basic-addon1">Color</span>
-            <input type="color" class="form-control col-7" aria-describedby="basic-addon1" id="colorInput">
+            <input type="color" class="form-control col-7" aria-describedby="basic-addon1" id="colorInput" value="<?php (isset($_GET['color'])) ? print("#{$_GET['color']}") : print('#000000') ?>">
             <span class="input-group-addon col-2">
-              <input type="checkbox" aria-label="Checkbox for following text input" id="byColorInput">
+              <input type="checkbox" aria-label="Checkbox for following text input" id="byColorInput" <?php (isset($_GET['color'])) ? print('checked') : print('') ?>>
           </span>
           </div>
         </div>
         <div class="form-group col-12 col-sm-6 col-lg-3">
           <select class="custom-select col-12" id="sortInput">
-            <option value="0" selected>Ordenar por</option>
+            <option value="0">Ordenar por</option>
             <option value="1">Recientes</option>
             <option value="2">Mas Descargados</option>
             <option value="3">Con Mejor Calificacion</option>
@@ -58,6 +70,11 @@
           foreach ($resultWalls as $key => $w) {
             echo $w;
           }
+          //  $c = new Collection();
+          //  $walls = $c->toCard($c->getSearch(null,30,'D42727'));
+          // foreach ($walls as $key => $w) {
+          //   echo $w;
+          // }
          ?>
       </div>
 

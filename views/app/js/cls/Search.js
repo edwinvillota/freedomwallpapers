@@ -3,7 +3,7 @@ class Search {
     this.params = {
       'keyword' : keyword.trim() || false,
       'category' : (category != 0) ? category : false,
-      'color' : (byColor) ? color : false,
+      'color' : (byColor) ? (color.replace('#','')) : false,
       'sort' : (sort != 0) ? sort : false
     }
   }
