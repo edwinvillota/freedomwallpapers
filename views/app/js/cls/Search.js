@@ -8,13 +8,13 @@ class Search {
     }
   }
 
-  execute(){
+  execute(page = 1){
     let getParams = '';
     for (let p in this.params){
       if(this.params[p]){
           getParams += `&${p}=${this.params[p]}`;
       }
     }
-    window.location.assign(`?view=search${getParams}`);
+    window.location.assign(`?view=search${getParams}&page=${page}`);
   }
 }

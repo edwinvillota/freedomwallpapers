@@ -51,10 +51,11 @@
         </div>
         <div class="form-group col-12 col-sm-6 col-lg-3">
           <select class="custom-select col-12" id="sortInput">
-            <option value="0">Ordenar por</option>
-            <option value="1">Recientes</option>
-            <option value="2">Mas Descargados</option>
-            <option value="3">Con Mejor Calificacion</option>
+            <?php (isset($_GET['sort'])) ? $sort = $_GET['sort'] : $sort = 0;?>
+            <option value="0" <?php ($sort == 0) ? print(' selected') : print('');?>>Ordenar por</option>
+            <option value="1" <?php ($sort == 1) ? print(' selected') : print('');?>>Recientes</option>
+            <option value="2" <?php ($sort == 2) ? print(' selected') : print('');?>>Mas Descargados</option>
+            <option value="3" <?php ($sort == 3) ? print(' selected') : print('');?>>Con Mejor Calificacion</option>
           </select>
         </div>
       </form>
@@ -70,15 +71,24 @@
           foreach ($resultWalls as $key => $w) {
             echo $w;
           }
-          //  $c = new Collection();
-          //  $walls = $c->toCard($c->getSearch(null,30,'D42727'));
-          // foreach ($walls as $key => $w) {
-          //   echo $w;
-          // }
          ?>
       </div>
-
     </div>
+    <nav aria-label="...">
+      <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1">Anterior</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item active">
+          <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#">Siguiente</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </section>
 

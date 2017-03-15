@@ -51,9 +51,35 @@
       }
     }
 
-  public function getSearch($mode = 0,$params = false){
+  public function getSearch($mode = 0,$params = false, $page = 1){
+      $itemsperpage = 12;
       $walls = array();
       $db = new ConnectionDB();
+      // Convertir el color a decimal y dividirlo en r,g y b
+      if(isset($params['color'])){
+        // Obtener el color
+        $color = $params['color'];
+        // Obtener los rgb
+        $r = substr($color,0,2);
+        $g = substr($color,2,2);
+        $b = substr($color,4,2);
+        // Convertir a decimal
+        $r = hexdec($r);
+        $g = hexdec($g);
+        $b = hexdec($b);
+      }
+
+      // Obtener el parametro por el cual ordenar
+      if(isset($params['sort'])){
+        switch ($params['sort']) {
+          case 1: # Mas recientes
+            $sort = 'id';
+            break;
+          default:
+            $sort = 'id';
+            break;
+        }
+      }
 
       switch ($mode) {
         case 1: # Solo palabra clave
@@ -71,16 +97,6 @@
           $stmt->bind_param('i',$c);
           break;
         case 5: # Solo Color
-          // Obtener el color
-          $color = $params['color'];
-          // Obtener los rgb
-          $r = substr($color,0,2);
-          $g = substr($color,2,2);
-          $b = substr($color,4,2);
-          // Convertir a decimal
-          $r = hexdec($r);
-          $g = hexdec($g);
-          $b = hexdec($b);
           // Crear la consulta
           $sql = 'SELECT id
           FROM
@@ -93,17 +109,8 @@
           $stmt->bind_param('iii',$r,$g,$b);
           break;
         case 10: # Solo orden
-          echo $params['sort'];
           // Crear consulta
-          switch ($params['sort']) {
-            case 1:
-              $sql = 'SELECT id FROM wallpapers ORDER BY id DESC';
-              break;
-
-            default:
-              $sql = 'SELECT id FROM wallpapers ORDER BY id DESC';
-              break;
-          }
+          $sql = "SELECT id FROM wallpapers ORDER BY {$sort} DESC";
           $stmt = $db->prepare($sql);
           break;
         case 4: # Palabra clave y Categoria
@@ -114,17 +121,6 @@
           $stmt->bind_param('si',$k,$c);
           break;
         case 6: # Palabra clave y Color
-          // Crear Consulta
-          // Obtener el color
-          $color = $params['color'];
-          // Obtener los rgb
-          $r = substr($color,0,2);
-          $g = substr($color,2,2);
-          $b = substr($color,4,2);
-          // Convertir a decimal
-          $r = hexdec($r);
-          $g = hexdec($g);
-          $b = hexdec($b);
           // Crear la consulta
           $sql = 'SELECT id
           FROM
@@ -139,16 +135,6 @@
           break;
         case 9: # Palabra clave, Categoria y Color
           // Crear Consulta
-          // Obtener el color
-          $color = $params['color'];
-          // Obtener los rgb
-          $r = substr($color,0,2);
-          $g = substr($color,2,2);
-          $b = substr($color,4,2);
-          // Convertir a decimal
-          $r = hexdec($r);
-          $g = hexdec($g);
-          $b = hexdec($b);
           // Crear la consulta
           $sql = 'SELECT id
           FROM
@@ -162,14 +148,6 @@
           $stmt->bind_param('iiisi',$r,$g,$b,$k,$c);
           break;
         case 11: # Palabra clave y Orden
-          switch ($params['sort']) {
-            case 1: # Mas recientes
-              $sort = 'id';
-              break;
-            default:
-              $sort = 'id';
-              break;
-          }
           $sql = "SELECT id FROM wallpapers WHERE name LIKE ? ORDER BY {$sort} DESC";
           $stmt = $db->prepare($sql);
           $k = "%{$params['keyword']}%";
@@ -177,16 +155,6 @@
           break;
         case 8: # Categoria y color
           // Crear Consulta
-          // Obtener el color
-          $color = $params['color'];
-          // Obtener los rgb
-          $r = substr($color,0,2);
-          $g = substr($color,2,2);
-          $b = substr($color,4,2);
-          // Convertir a decimal
-          $r = hexdec($r);
-          $g = hexdec($g);
-          $b = hexdec($b);
           // Crear la consulta
           $sql = 'SELECT id
           FROM
@@ -214,14 +182,6 @@
           $stmt->bind_param('i',$c);
           break;
         case 14: # Categoria orden y palabra clave
-          switch ($params['sort']) {
-            case 1: # Mas recientes
-              $sort = 'id';
-              break;
-            default:
-              $sort = 'id';
-              break;
-          }
           $sql = "SELECT id FROM wallpapers WHERE name LIKE ? AND category_id = ? ORDER BY {$sort} DESC";
           $stmt = $db->prepare($sql);
           $k = "%{$params['keyword']}%";
@@ -230,25 +190,7 @@
           break;
           break;
         case 15: # Color y orden
-          switch ($params['sort']) {
-            case 1: # Mas recientes
-              $sort = 'id';
-              break;
-            default:
-              $sort = 'id';
-              break;
-          }
           // Crear Consulta
-          // Obtener el color
-          $color = $params['color'];
-          // Obtener los rgb
-          $r = substr($color,0,2);
-          $g = substr($color,2,2);
-          $b = substr($color,4,2);
-          // Convertir a decimal
-          $r = hexdec($r);
-          $g = hexdec($g);
-          $b = hexdec($b);
           // Crear la consulta
           $sql = "SELECT id
           FROM
@@ -260,26 +202,20 @@
           $stmt = $db->prepare($sql);
           $stmt->bind_param('iii',$r,$g,$b);
           break;
+        case 18: # Categoria, Color y Orden
+          // Crear la Consulta
+          $sql = "SELECT id
+          FROM
+            (SELECT id,name,color_vibrant,category_id,
+              SQRT(POW((? - CONV(LEFT(color_vibrant,2),16,10)),2) +
+              POW((? - CONV(RIGHT(LEFT(color_vibrant,4),2),16,10)),2) +
+              POW((? - CONV(RIGHT(color_vibrant,2),16,10)),2))
+              AS D FROM wallpapers WHERE category_id = ?) AS t WHERE D < 70 ORDER BY {$sort} DESC";
+          $stmt = $db->prepare($sql);
+          $c = $params['category'];
+          $stmt->bind_param('iiii',$r,$g,$b,$c);
+          break;
         case 19: # Todos los parametros
-          switch ($params['sort']) {
-            case 1: # Mas recientes
-              $sort = 'id';
-              break;
-            default:
-              $sort = 'id';
-              break;
-          }
-          // Crear Consulta
-          // Obtener el color
-          $color = $params['color'];
-          // Obtener los rgb
-          $r = substr($color,0,2);
-          $g = substr($color,2,2);
-          $b = substr($color,4,2);
-          // Convertir a decimal
-          $r = hexdec($r);
-          $g = hexdec($g);
-          $b = hexdec($b);
           // Crear la consulta
           $sql = "SELECT id
           FROM

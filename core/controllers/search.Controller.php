@@ -24,6 +24,7 @@ sec_session_start();
     # 13: Categoria y orden
     # 14: Categoria , orden y Keyword
     # 15: Color y orden
+    # 18: Categoria, Color y orden
     # 19: Todos los parametros
 
     $c = new Collection();
