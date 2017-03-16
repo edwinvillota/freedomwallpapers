@@ -26,11 +26,15 @@ sec_session_start();
     # 15: Color y orden
     # 18: Categoria, Color y orden
     # 19: Todos los parametros
+    (isset($_GET['page'])) ? $page = $_GET['page'] : $page = 1;
 
     $c = new Collection();
-    $resultWalls = $c->toCard($c->getSearch($mode,$params));
-
+    $resultWalls = $c->toCard($c->getSearch($mode,$params,$page,true));
+    $numResults = $c->getSearch($mode,$params,$page,false);
+    $numResults = $numResults['results'];
   } else {
+    $numResults = 0;
+    $page = 1;
     $c = new Collection();
     $resultWalls = $c->toCard($c->getRecent());
   }
