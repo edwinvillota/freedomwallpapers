@@ -38,5 +38,8 @@ sec_session_start();
     $c = new Collection();
     $resultWalls = $c->toCard($c->getRecent());
   }
+  if(isset($resultWalls['results'])){
+    unset($resultWalls['results']);
+  }
   include('html/search/search.php')
 ?>

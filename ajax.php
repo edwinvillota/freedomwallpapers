@@ -28,6 +28,10 @@
 				require('core/bin/ajax/getRecent.php');
 				break;
 
+			case 'downloadWall':
+				require('core/bin/ajax/downloadWall.php');
+				break;
+
 			default:
 				header('location: index.php');
 				break;

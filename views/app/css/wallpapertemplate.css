@@ -1,0 +1,40 @@
+.bigWallSection {
+  padding-top: 4rem;
+}
+
+.bigWallSection .container {
+  overflow: hidden;
+}
+
+.img-fluid {
+  overflow: hidden;
+}
+
+.actionsBar {
+}
+
+.actionsBar .btn {
+  border-radius: 0;
+  margin-top: 5px;
+}
+
+@media (max-width: 540px) {
+  .actionsBar .btn {
+    margin-top: 5px;
+  }
+
+  .actionsBar {
+    margin-left: 0px;
+  }
+}
+/* Pantalla Mediana*/
+@media (min-width: 540px){
+  .actionsBar .btn {
+    margin-top: 0px;
+    margin-bottom: 5px;
+  }
+
+  .actionsBar {
+    margin-left: -15px;
+  }
+}

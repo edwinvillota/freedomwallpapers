@@ -28,6 +28,7 @@
 			// Scripts de paginas
 			$homePage = "views/app/js/home.js";
 			$searchPage = "views/app/js/search.js";
+			$wallpaperPage = "views/app/js/wallpaper.js";
 			// Bootstrap
 			// Tether
 			$libsTether = "https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js";
@@ -52,6 +53,7 @@
 				'dropWallpaper' => $dropWallpaper,
 				'homePage' => $homePage,
 				'searchPage' => $searchPage,
+				'wallpaperPage' => $wallpaperPage,
 				'libsTether' => $libsTether,
 				'libsBootstrap' => $libsBootstrap,
 				'libsVibrant' => $libsVibrant,
@@ -74,6 +76,7 @@
 					'registerScript' => true,
 					'dropWallpaper' => true,
 					'homePage' => true,
+					'wallpaperPage' => true,
 					'libsTether' => true,
 					'libsBootstrap' => true,
 					'libsVibrant' => true,
@@ -101,6 +104,7 @@
 			$registertemplate = 'views/app/css/registertemplate.css';
 			$addWallpapertemplate = 'views/app/css/addWallpapertemplate.css';
 			$searchtemplate = 'views/app/css/searchtemplate.css';
+			$wallpapertemplate = 'views/app/css/wallpapertemplate.css';
 			// Plantilla del menu de navegacion
 			$navbartemplate = 'views/app/css/navbartemplate.css';
 			// Plantillas de librerias
@@ -113,6 +117,7 @@
 				'registertemplate' => $registertemplate,
 				'addWallpapertemplate' => $addWallpapertemplate,
 				'searchtemplate'	=> $searchtemplate,
+				'wallpapertemplate' => $wallpapertemplate,
 				'navbartemplate' => $navbartemplate,
 				'fontawesome' => $fontawesome
 				);

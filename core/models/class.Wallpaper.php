@@ -309,6 +309,19 @@
 				return $stmt->error;
 			}
 		}
+		// Metodo para añadir descarga
+		public function addDownload($user = NULL){
+			// Conectar con la base de datos
+			$db = new ConnectionDB();
+			$stmt = $db->prepare('INSERT INTO downloads (wall_id,user_id) VALUES (?,?)');
+			$stmt->bind_param('ii',$this->id,$user);
+			if($stmt->execute()){
+				return true;
+			} else {
+				return $stmt->error;
+			};
+
+		}
 
 
 		// Metodos Estaticos

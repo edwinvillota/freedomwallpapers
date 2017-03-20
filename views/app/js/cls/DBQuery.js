@@ -3,13 +3,14 @@ class DBQuery {
 
 	}
 
-	access(mode,callback){
+	access(mode,callback,id = false){
 		$.ajax({
 	      url: 'ajax.php',
 	      type: 'POST',
 	      dataType: 'json',
 	      data: {
-	        'mode'      : mode
+	        'mode'      : mode,
+					'id'				: id
 	      }
 	    })
 	      .done(function(response) {
@@ -34,5 +35,11 @@ class DBQuery {
 		this.access('getRecent',response => {
 			callback(response);
 		});
+	}
+
+	downloadWall(callback,id){
+		this.access('downloadWall', response => {
+			callback(response);
+		},id);
 	}
 }

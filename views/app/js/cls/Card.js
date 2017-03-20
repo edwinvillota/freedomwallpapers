@@ -1,6 +1,6 @@
 class Card {
   constructor(wall){
-    this.el =  $('<a href=?view=wallpaper&id=' + wall.id + '"><div class="card card-inverse mb-2">' +
+    this.el =  $('<a href=?view=wallpaper&id=' + wall.id + '><div class="card card-inverse mb-2">' +
                '<img class="card-img-top img-fluid" src="' + wall.thumbs.small + '" alt="' + wall.name + '">' +
                '<div class="card-block">' +
                '<h4 class="card-title">' + wall.name + '</h4>' +
