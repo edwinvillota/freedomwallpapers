@@ -16,9 +16,14 @@
 .actionsBar .btn {
   border-radius: 0;
   margin-top: 5px;
+  padding: 5px 0;
+  }
+
+.actionsBar button {
+  margin-left: 0px !important;
 }
 
-@media (max-width: 540px) {
+@media (max-width: 576px) {
   .actionsBar .btn {
     margin-top: 5px;
   }
@@ -28,13 +33,13 @@
   }
 }
 /* Pantalla Mediana*/
-@media (min-width: 540px){
+@media (min-width: 576px){
   .actionsBar .btn {
     margin-top: 0px;
-    margin-bottom: 5px;
   }
 
   .actionsBar {
     margin-left: -15px;
+    padding: 0px;
   }
 }

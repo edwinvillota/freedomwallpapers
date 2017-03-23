@@ -313,16 +313,131 @@
 		public function addDownload($user = NULL){
 			// Conectar con la base de datos
 			$db = new ConnectionDB();
-			$stmt = $db->prepare('INSERT INTO downloads (wall_id,user_id) VALUES (?,?)');
-			$stmt->bind_param('ii',$this->id,$user);
-			if($stmt->execute()){
+			// Comprobar si el usuario ya tiene registrada la descarga
+			$downloaded = $db->prepare('SELECT id FROM downloads WHERE user_id = ? AND wall_id = ?');
+			$downloaded->bind_param('ii',$user,$this->id);
+			$downloaded->execute();
+			$downloaded->store_result();
+			if($downloaded->num_rows == 0){
+				$downloaded->close();
+				$stmt = $db->prepare('INSERT INTO downloads (wall_id,user_id) VALUES (?,?)');
+				$stmt->bind_param('ii',$this->id,$user);
+				if($stmt->execute()){
+					$stmt->close();
+					$db->close();
+					return true;
+				} else {
+					$stmt->close();
+					$db->close();
+					return $stmt->error;
+				};
+			} else {
+				$downloaded->close();
+				return false;
+			}
+
+		}
+		// Metodo para añadir a favoritos
+		public function addFavorite($user){
+			// Conectar con la base de datos
+			$db = new ConnectionDB();
+			// Verficar si ya esta en favoritos
+			$exists = $db->prepare('SELECT id FROM favorites WHERE user_id = ? AND wall_id = ?');
+			$exists->bind_param('ii',$user,$this->id);
+			$exists->execute();
+			$exists->store_result();
+			if($exists->num_rows == 0){
+				$exists->close();
+				$stmt = $db->prepare('INSERT INTO favorites (user_id,wall_id) VALUES (?,?)');
+				$stmt->bind_param('ii',$user,$this->id);
+				if($stmt->execute()){
+					$stmt->close();
+					$db->close();
+					return true;
+				} else {
+					$stmt->close();
+					$db->close();
+					return $stmt->error;
+				}
+			} else {
+				return 'El wallpaper ya esta agregado a favoritos';
+			}
+		}
+		// Metodo para añadir voto
+		public function addVote($user,$type){
+			// Convertir el type
+			($type) ? $type = 'like' : $type = 'dislike';
+			// Conectar con la base de datos
+			$db = new ConnectionDB();
+			//  Verficar si el wall ya fue votado
+			$voted = $db->prepare('SELECT id,type FROM votes WHERE user_id = ? AND wall_id = ?');
+			$voted->bind_param('ii',$user,$this->id);
+			$voted->execute();
+			$voted->store_result();
+			if($voted->num_rows == 0){
+				$voted->close();
+				// Aun no fue votado
+				$stmt = $db->prepare('INSERT INTO votes (user_id,wall_id,type) VALUES (?,?,?)');
+				$stmt->bind_param('iis',$user,$this->id,$type);
+				$stmt->execute();
+				$stmt->close();
+				$db->close();
 				return true;
 			} else {
-				return $stmt->error;
-			};
+				// Ya fue votado
+				$voted->bind_result($id,$ctype);
+				$voted->fetch();
+				if($type != $ctype){
+					// El voto actual es diferente al recibido, se debe actualizar
+					$stmt = $db->prepare('UPDATE votes SET type = ? WHERE user_id = ? AND wall_id = ?');
+					$stmt->bind_param('sii',$type,$user,$this->id);
+					$stmt->execute();
+					$stmt->close();
+					$db->close();
+					return true;
+				} else {
+					$voted->close();
+					return true;
+				}
+			}
 
 		}
 
+		// Metodo que retorna las estadisticas dek wallpaper
+		public function getStatistics(){
+			// Conectar con la base de datos
+			$db = new ConnectionDB();
+			// Eleborar consulta
+			$stmt = $db->prepare('SELECT	w.id,
+				COUNT(DISTINCT d.id) AS Downloads,
+				COUNT(DISTINCT f.id) AS Favorites,
+				COUNT(DISTINCT v1.id) AS Likes,
+				COUNT(DISTINCT v2.id) AS Dislikes
+			FROM 	wallpapers AS w
+				LEFT OUTER JOIN downloads AS d ON w.id = d.wall_id
+				LEFT OUTER JOIN favorites AS f ON w.id = f.wall_id
+				LEFT OUTER JOIN votes AS v1 ON w.id = v1.wall_id AND v1.type = "like"
+				LEFT OUTER JOIN votes AS v2 ON w.id = v2.wall_id AND v2.type = "dislike"
+			WHERE w.id = ? GROUP BY w.id;
+');
+			echo $db->error;
+			$stmt->bind_param('i',$this->id);
+			if($stmt->execute()){
+				$stmt->bind_result($id,$down,$fav,$likes,$disl);
+				$stmt->fetch();
+				$statistics = array(
+					'id' => $id,
+					'downloads' => $down,
+					'favorites' => $fav,
+					'likes' => $likes,
+					'dislikes' => $disl
+				);
+				return $statistics;
+			} else {
+				return $stmt->error;
+			}
+
+		}
 
 		// Metodos Estaticos
 		public static function getWallpaper($idWall){

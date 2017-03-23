@@ -3,14 +3,15 @@ class DBQuery {
 
 	}
 
-	access(mode,callback,id = false){
+	access(mode,callback,id = false,params = {}){
 		$.ajax({
 	      url: 'ajax.php',
 	      type: 'POST',
 	      dataType: 'json',
 	      data: {
 	        'mode'      : mode,
-					'id'				: id
+					'id'				: id,
+					'params'		: params
 	      }
 	    })
 	      .done(function(response) {
@@ -39,6 +40,24 @@ class DBQuery {
 
 	downloadWall(callback,id){
 		this.access('downloadWall', response => {
+			callback(response);
+		},id);
+	}
+
+	addFavorite(callback,id){
+		this.access('addFavorite', response => {
+			callback(response);
+		},id);
+	}
+
+	addVote(callback,id,params){
+		this.access('addVote', response => {
+			callback(response);
+		},id,params);
+	}
+
+	getStatistics(callback,id){
+		this.access('getStatistics', response => {
 			callback(response);
 		},id);
 	}

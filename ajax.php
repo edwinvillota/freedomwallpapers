@@ -32,6 +32,18 @@
 				require('core/bin/ajax/downloadWall.php');
 				break;
 
+			case 'addFavorite':
+				require('core/bin/ajax/addFavorite.php');
+				break;
+
+			case 'addVote':
+				require('core/bin/ajax/addVote.php');
+				break;
+
+			case 'getStatistics':
+				require('core/bin/ajax/getStatistics.php');
+				break;
+
 			default:
 				header('location: index.php');
 				break;

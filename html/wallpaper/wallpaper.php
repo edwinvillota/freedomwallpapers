@@ -14,21 +14,32 @@
       </div>
       <div class="actionsBar col-12 col-sm-1 ">
         <div class="btn-group d-block" role="group" aria-label="Button group with nested dropdown">
-          <a class="btn btn-primary col-2 col-sm-12" download id="downloadBtn">
+          <a class="btn btn-primary col-2 col-sm-12" data-toggle="tooltip" data-placement="left" title="Descargar" download id="downloadBtn">
             <i class="fa fa-download" aria-hidden="true"></i>
           </a>
-          <button type="button" class="btn btn-danger col-2 col-sm-12">
+          <button type="button" class="btn btn-danger col-2 col-sm-12" data-toggle="tooltip" data-placement="left" title="Favoritos" id="addFavBtn">
             <i class="fa fa-heart" aria-hidden="true"></i>
           </button>
-          <button type="button" class="btn btn-warning col-2 col-sm-12">
-            <i class="fa fa-star" aria-hidden="true"></i>
+          <button type="button" class="btn btn-success col-2 col-sm-12 voteBtn" data-toggle="tooltip" data-placement="left" title="Me gusta" data-vote="1">
+            <i class="fa fa-thumbs-up" aria-hidden="true"></i>
           </button>
-          <button type="button" class="btn btn-secondary col-2 col-sm-12">
+          <button type="button" class="btn btn-warning col-2 col-sm-12 voteBtn" data-toggle="tooltip" data-placement="left" title="No me gusta" data-vote="0">
+            <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+          </button>
+          <button type="button" class="btn btn-secondary col-2 col-sm-12" data-toggle="tooltip" data-placement="left" title="Recortar">
             <i class="fa fa-crop" aria-hidden="true"></i>
           </button>
         </div>
       </div>
     </div>
+  </div>
+</section>
+<section class="wallStatisticsSection">
+  <div class="container">
+    <span class="text-muted">Descargas <span class="badge badge-primary" id="downloadsCount">0</span></span>
+    <span class="text-muted">Favoritos <span class="badge badge-danger" id="favoritesCount">0</span></span>
+    <span class="text-muted">Me gusta <span class="badge badge-success" id="likesCount">0</span></span>
+    <span class="text-muted">No me gusta <span class="badge badge-warning" id="dislikesCount">0</span></span>
   </div>
 </section>
 
@@ -49,7 +60,7 @@
     'homePage' => false,
     'searchPage' => false,
     'wallpaperPage' => true,
-    'libsTether' => false,
+    'libsTether' => true,
     'libsBootstrap' => true,
     'libsVibrant' => false,
     'libsFileInput' => false,
