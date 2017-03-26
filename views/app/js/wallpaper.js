@@ -53,6 +53,33 @@ function refreshStatistics(){
     lCount.innerHTML = response.likes;
     disCount.innerHTML = response.dislikes;
   },id);
+  refreshButtonsStates();
 }
 
 refreshStatistics();
+
+// Funcion para obtener los estados de los botones de accion
+function refreshButtonsStates(){
+  let db = new DBQuery();
+  db.getUserWallStates(response => {
+    let favBtn = document.getElementById('addFavBtn');
+    let likeBtn = document.getElementById('likeBtn');
+    let dislikeBtn = document.getElementById('dislikeBtn');
+    // Quitar los disabled
+    favBtn.classList.remove('disabled');
+    likeBtn.classList.remove('disabled');
+    dislikeBtn.classList.remove('disabled');
+    if(response.favorite){
+      favBtn.classList.add('disabled');
+    }
+    if(response.voted){
+      if(response.type == 'like'){
+        likeBtn.classList.add('disabled');
+      } else {
+        dislikeBtn.classList.add('disabled');
+      }
+    }
+  },id);
+}
+
+refreshButtonsStates();

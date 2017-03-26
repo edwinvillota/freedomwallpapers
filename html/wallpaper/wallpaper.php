@@ -20,10 +20,10 @@
           <button type="button" class="btn btn-danger col-2 col-sm-12" data-toggle="tooltip" data-placement="left" title="Favoritos" id="addFavBtn">
             <i class="fa fa-heart" aria-hidden="true"></i>
           </button>
-          <button type="button" class="btn btn-success col-2 col-sm-12 voteBtn" data-toggle="tooltip" data-placement="left" title="Me gusta" data-vote="1">
+          <button type="button" class="btn btn-success col-2 col-sm-12 voteBtn" data-toggle="tooltip" data-placement="left" title="Me gusta" data-vote="1" id="likeBtn">
             <i class="fa fa-thumbs-up" aria-hidden="true"></i>
           </button>
-          <button type="button" class="btn btn-warning col-2 col-sm-12 voteBtn" data-toggle="tooltip" data-placement="left" title="No me gusta" data-vote="0">
+          <button type="button" class="btn btn-warning col-2 col-sm-12 voteBtn" data-toggle="tooltip" data-placement="left" title="No me gusta" data-vote="0" id="dislikeBtn">
             <i class="fa fa-thumbs-down" aria-hidden="true"></i>
           </button>
           <button type="button" class="btn btn-secondary col-2 col-sm-12" data-toggle="tooltip" data-placement="left" title="Recortar">

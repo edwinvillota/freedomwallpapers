@@ -43,6 +43,9 @@
 			case 'getStatistics':
 				require('core/bin/ajax/getStatistics.php');
 				break;
+			case 'getUserWallStates':
+				require('core/bin/ajax/getUserWallStates.php');
+				break;
 
 			default:
 				header('location: index.php');

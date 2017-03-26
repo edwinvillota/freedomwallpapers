@@ -61,4 +61,10 @@ class DBQuery {
 			callback(response);
 		},id);
 	}
+
+	getUserWallStates(callback,id){
+		this.access('getUserWallStates', response => {
+			callback(response);
+		},id)
+	}
 }

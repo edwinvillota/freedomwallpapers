@@ -403,7 +403,7 @@
 
 		}
 
-		// Metodo que retorna las estadisticas dek wallpaper
+		// Metodo que retorna las estadisticas del wallpaper
 		public function getStatistics(){
 			// Conectar con la base de datos
 			$db = new ConnectionDB();
@@ -419,7 +419,7 @@
 				LEFT OUTER JOIN votes AS v1 ON w.id = v1.wall_id AND v1.type = "like"
 				LEFT OUTER JOIN votes AS v2 ON w.id = v2.wall_id AND v2.type = "dislike"
 			WHERE w.id = ? GROUP BY w.id;
-');
+			');
 			echo $db->error;
 			$stmt->bind_param('i',$this->id);
 			if($stmt->execute()){
@@ -436,8 +436,45 @@
 			} else {
 				return $stmt->error;
 			}
+		}
+
+		// Metodo que retorna es estado del wallpaper respecto al usuario
+		public function getUserWallStates($user){
+			// Conectar con la base de datos
+			$db = new ConnectionDB();
+			// Preparar consulta
+			$stmt = $db->prepare('SELECT	m.id AS User,
+																		f.wall_id AS Favorite,
+																		v.wall_id AS Voted,
+																		v.type AS Type
+														FROM 	members AS m
+														LEFT OUTER JOIN favorites AS f ON f.user_id = m.id AND f.wall_id = ?
+														LEFT OUTER JOIN votes AS v ON v.user_id = m.id AND v.wall_id = ?
+														WHERE m.id = ?;');
+			// Enlazar parametros
+			$stmt->bind_param('iii',$this->id,$this->id,$user);
+			// Ejecutar consulta
+			if($stmt->execute()){
+				// Enlazar resultados
+				$stmt->bind_result($userId,$fId,$vId,$type);
+				$stmt->fetch();
+				($fId) ? $fId = true : $fId = false;
+				($vId) ? $vId = true : $vId = false;
+				($vId) ? $type = $type : $type = false;
+				$states = array(
+					'userId' => $userId,
+					'favorite' => $fId,
+					'voted' => $vId,
+					'type' => $type
+				);
+				return $states;
+			} else {
+				return false;
+			}
+
 
 		}
+
 
 		// Metodos Estaticos
 		public static function getWallpaper($idWall){
